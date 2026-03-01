@@ -26,10 +26,3 @@ jobs:
 
       - name: PR Checks
         run: bun run pr:check
-
-      - name: Upload results to Codecov
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        uses: codecov/codecov-action@v5
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          slug: felix-dolderer/felix-dolderer-com

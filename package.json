@@ -13,8 +13,8 @@
     "fmt:check": "oxfmt --check",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
-    "pr": "bun run lint:fix && bun run fmt && bun run typecheck",
-    "pr:check": "bun run lint && bun run fmt:check && bun run typecheck"
+    "pr": "bun run lint:fix && bun run fmt && bun run typecheck && bun run build",
+    "pr:check": "bun run lint && bun run fmt:check && bun run typecheck && bun run build"
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.95",
