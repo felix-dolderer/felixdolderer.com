@@ -4,10 +4,6 @@ seo:
 title: "Hey, I'm Felix Dolderer UX/UI Designer"
 description: "I craft intuitive digital experiences where design meets functionality. Based in Boston, bringing ideas to life through code and creativity."
 hero:
-  links:
-    - label: "Use this template"
-      to: https://github.com/nuxt-ui-templates/portfolio
-      color: "neutral"
   images:
     - src: /hero/random-1.avif
       alt: Random Image 1
