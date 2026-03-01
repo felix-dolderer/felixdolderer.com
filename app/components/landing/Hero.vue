@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import type { LocalizedIndexPageCollectionItem } from "~/types/content";
+
 const { footer, global } = useAppConfig();
 const { t } = useI18n();
 
 defineProps<{
-  page: Record<string, any>;
+  page: LocalizedIndexPageCollectionItem;
 }>();
 </script>
 

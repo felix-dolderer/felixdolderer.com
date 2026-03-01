@@ -1,18 +1,16 @@
 <script setup lang="ts">
+import type { LocalizedPagesCollectionItem } from "~/types/content";
+import { getLocalizedPageBySlug } from "~/utils/localized-content";
+
 const { locale } = useI18n();
 const localePath = useLocalePath();
 
-const getLocalizedPageBySlug = async (collection: string, slug: "/projects" | "/blog") => {
-  const pages = await queryCollection(collection as any).all();
-  return (pages as any[]).find((entry) => entry.path?.endsWith(slug)) || null;
-};
-
-const { data: page } = await useAsyncData<any>(
+const { data: page } = await useAsyncData<LocalizedPagesCollectionItem | null>(
   () => `blog-page-${locale.value}`,
   async () => {
-    const localizedPage = await getLocalizedPageBySlug(`pages_${locale.value}`, "/blog");
+    const localizedPage = await getLocalizedPageBySlug(locale.value, "/blog");
     if (localizedPage) return localizedPage;
-    return getLocalizedPageBySlug("pages_en", "/blog");
+    return getLocalizedPageBySlug("en", "/blog");
   },
   { watch: [locale] },
 );

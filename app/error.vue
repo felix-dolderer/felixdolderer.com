@@ -4,12 +4,9 @@ import type { NuxtError } from "#app";
 const { locale, t } = useI18n();
 const navLinks = useNavLinks();
 
-defineProps({
-  error: {
-    type: Object as PropType<NuxtError>,
-    required: true,
-  },
-});
+const { error } = defineProps<{
+  error: NuxtError;
+}>();
 
 useHead({
   htmlAttrs: {

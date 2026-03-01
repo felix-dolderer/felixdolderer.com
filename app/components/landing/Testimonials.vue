@@ -1,9 +1,21 @@
 <script setup lang="ts">
+import type { LocalizedIndexPageCollectionItem, Testimonial } from "~/types/content";
+
 const props = defineProps<{
-  page: Record<string, any>;
+  page: LocalizedIndexPageCollectionItem;
 }>();
 
-const testimonials = computed(() => props.page.testimonials || []);
+const testimonials = computed<Testimonial[]>(() => props.page.testimonials);
+
+function isTestimonial(value: unknown): value is Testimonial {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "quote" in value &&
+    typeof value.quote === "string" &&
+    "author" in value
+  );
+}
 </script>
 
 <template>
@@ -23,7 +35,7 @@ const testimonials = computed(() => props.page.testimonials || []);
       }"
     >
       <UPageCTA
-        :description="(item as any)?.quote"
+        :description="isTestimonial(item) ? item.quote : ''"
         variant="naked"
         class="rounded-none"
         :ui="{
@@ -32,7 +44,7 @@ const testimonials = computed(() => props.page.testimonials || []);
             'text-base! text-balance before:content-[open-quote] before:text-5xl lg:before:text-7xl before:inline-block before:text-dimmed before:absolute before:-ml-6 lg:before:-ml-10 before:-mt-2 lg:before:-mt-4 after:content-[close-quote] after:text-5xl lg:after:text-7xl after:inline-block after:text-dimmed after:absolute after:mt-1 lg:after:mt-0 after:ml-1 lg:after:ml-2',
         }"
       >
-        <UUser v-bind="(item as any)?.author" size="xl" class="justify-center" />
+        <UUser v-if="isTestimonial(item)" v-bind="item.author" size="xl" class="justify-center" />
       </UPageCTA>
     </UCarousel>
   </UPageSection>

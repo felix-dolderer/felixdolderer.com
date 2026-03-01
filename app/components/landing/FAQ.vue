@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import type { FaqCategory, FaqQuestion, LocalizedIndexPageCollectionItem } from "~/types/content";
+
 const props = defineProps<{
-  page: Record<string, any>;
+  page: LocalizedIndexPageCollectionItem;
 }>();
 
 const items = computed(() => {
-  return props.page.faq?.categories.map((faq: Record<string, any>) => {
+  return props.page.faq.categories.map((faq: FaqCategory) => {
     return {
       label: faq.title,
       key: faq.title.toLowerCase(),
@@ -22,6 +24,15 @@ const ui = {
     "px-3 py-2 rounded-lg hover:bg-muted/50 data-[state=active]:text-highlighted data-[state=inactive]:text-muted",
   label: "truncate",
 };
+
+function isFaqQuestion(value: unknown): value is FaqQuestion {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "content" in value &&
+    typeof value.content === "string"
+  );
+}
 </script>
 
 <template>
@@ -49,7 +60,7 @@ const ui = {
           }"
         >
           <template #body="{ item: _item }">
-            <MDC :value="_item.content || ''" unwrap="p" class="px-4" />
+            <MDC :value="isFaqQuestion(_item) ? _item.content : ''" unwrap="p" class="px-4" />
           </template>
         </UAccordion>
       </template>

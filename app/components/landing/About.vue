@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import type { LocalizedIndexPageCollectionItem } from "~/types/content";
+
 defineProps<{
-  page: Record<string, any>;
+  page: LocalizedIndexPageCollectionItem;
 }>();
 </script>
 
