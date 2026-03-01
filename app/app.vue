@@ -26,7 +26,7 @@ const [{ data: navigation }, { data: files }] = await Promise.all([
   useAsyncData(
     "navigation",
     () => {
-      return Promise.all([queryCollectionNavigation("blog")]);
+      return queryCollectionNavigation("blog");
     },
     {
       transform: (data) => data.flat(),
@@ -35,7 +35,7 @@ const [{ data: navigation }, { data: files }] = await Promise.all([
   useLazyAsyncData(
     "search",
     () => {
-      return Promise.all([queryCollectionSearchSections("blog")]);
+      return queryCollectionSearchSections("blog");
     },
     {
       server: false,
