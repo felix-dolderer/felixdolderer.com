@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import type { IndexCollectionItem } from "@nuxt/content";
-
 const { footer, global } = useAppConfig();
+const { t } = useI18n();
 
 defineProps<{
-  page: IndexCollectionItem;
+  page: Record<string, any>;
 }>();
 </script>
 
@@ -108,7 +107,7 @@ defineProps<{
             variant="ghost"
             class="gap-2"
             :to="global.available ? global.meetingLink : ''"
-            :label="global.available ? 'Available for new projects' : 'Not available at the moment'"
+            :label="global.available ? t('hero.available') : t('hero.unavailable')"
           >
             <template #leading>
               <span class="relative flex size-2">
@@ -166,14 +165,14 @@ defineProps<{
         }"
         :transition="{
           duration: 0.6,
-          delay: index * 0.1,
+          delay: Number(index) * 0.1,
         }"
       >
         <NuxtImg
           width="234"
           height="234"
           class="rounded-lg aspect-square object-cover"
-          :class="index % 2 === 0 ? '-rotate-2' : 'rotate-2'"
+          :class="Number(index) % 2 === 0 ? '-rotate-2' : 'rotate-2'"
           v-bind="img"
         />
       </Motion>

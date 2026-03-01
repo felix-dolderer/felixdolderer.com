@@ -1,0 +1,16 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "ignorePatterns": [
+    ".output/**",
+    ".data/**",
+    ".nuxt/**",
+    ".nitro/**",
+    ".cache/**",
+    "dist/**",
+    "node_modules/**",
+    "logs/**",
+    "*.log",
+    ".playwright-cli/**",
+    "output/**"
+  ]
+}

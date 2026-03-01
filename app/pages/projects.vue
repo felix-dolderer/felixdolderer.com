@@ -1,7 +1,20 @@
 <script setup lang="ts">
-const { data: page } = await useAsyncData("projects-page", () => {
-  return queryCollection("pages").path("/projects").first();
-});
+const { locale, t } = useI18n();
+
+const getLocalizedPageBySlug = async (collection: string, slug: "/projects" | "/blog") => {
+  const pages = await queryCollection(collection as any).all();
+  return (pages as any[]).find((entry) => entry.path?.endsWith(slug)) || null;
+};
+
+const { data: page } = await useAsyncData<any>(
+  () => `projects-page-${locale.value}`,
+  async () => {
+    const localizedPage = await getLocalizedPageBySlug(`pages_${locale.value}`, "/projects");
+    if (localizedPage) return localizedPage;
+    return getLocalizedPageBySlug("pages_en", "/projects");
+  },
+  { watch: [locale] },
+);
 if (!page.value) {
   throw createError({
     statusCode: 404,
@@ -75,7 +88,7 @@ useSeoMeta({
           </template>
           <template #footer>
             <ULink :to="project.url" class="text-sm text-primary flex items-center">
-              View Project
+              {{ t("projects.viewProject") }}
               <UIcon
                 name="i-lucide-arrow-right"
                 class="size-4 text-primary transition-all opacity-0 group-hover:translate-x-1 group-hover:opacity-100"

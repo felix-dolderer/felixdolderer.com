@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { IndexCollectionItem } from "@nuxt/content";
-
 defineProps<{
-  page: IndexCollectionItem;
+  page: Record<string, any>;
 }>();
+const { t } = useI18n();
+const localePath = useLocalePath();
 
 const { data: posts } = await useAsyncData("index-blogs", () =>
   queryCollection("blog").order("date", "DESC").limit(3).all(),
@@ -30,7 +30,7 @@ if (!posts.value) {
         orientation="horizontal"
         variant="naked"
         v-bind="post"
-        :to="post.path"
+        :to="localePath(post.path)"
         :ui="{
           root: 'group relative lg:items-start lg:flex ring-0 hover:ring-0',
           body: '!px-0',
@@ -38,7 +38,7 @@ if (!posts.value) {
         }"
       >
         <template #footer>
-          <UButton size="xs" variant="link" class="px-0 gap-0" label="Read Article">
+          <UButton size="xs" variant="link" class="px-0 gap-0" :label="t('blog.readArticle')">
             <template #trailing>
               <UIcon
                 name="i-lucide-arrow-right"

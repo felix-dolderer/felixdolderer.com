@@ -1,0 +1,34 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "projects": "Projets",
+    "blog": "Blog",
+    "speaking": "Interventions",
+    "about": "À propos"
+  },
+  "hero": {
+    "available": "Disponible pour de nouveaux projets",
+    "unavailable": "Indisponible pour le moment"
+  },
+  "blog": {
+    "readArticle": "Lire l'article",
+    "backToBlog": "Blog",
+    "minRead": "{minutes} MIN DE LECTURE",
+    "copyLink": "Copier le lien",
+    "copied": "Lien de l'article copié dans le presse-papiers"
+  },
+  "projects": {
+    "viewProject": "Voir le projet"
+  },
+  "speaking": {
+    "listen": "Écouter",
+    "watch": "Regarder"
+  },
+  "error": {
+    "notFoundTitle": "Page non trouvée",
+    "notFoundDescription": "Cette page est introuvable."
+  },
+  "footer": {
+    "credits": "Créé avec Nuxt UI • © {year}"
+  }
+}

@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import type { IndexCollectionItem } from "@nuxt/content";
-
 defineProps<{
-  page: IndexCollectionItem;
+  page: Record<string, any>;
 }>();
 </script>
 
@@ -22,7 +20,7 @@ defineProps<{
           :key="index"
           :initial="{ opacity: 0, transform: 'translateY(20px)' }"
           :while-in-view="{ opacity: 1, transform: 'translateY(0)' }"
-          :transition="{ delay: 0.4 + 0.2 * index }"
+          :transition="{ delay: 0.4 + 0.2 * Number(index) }"
           :in-view-options="{ once: true }"
           class="text-muted flex items-center text-nowrap gap-2"
         >

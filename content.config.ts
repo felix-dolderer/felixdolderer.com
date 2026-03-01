@@ -1,5 +1,7 @@
 import { defineCollection, defineContentConfig, z } from "@nuxt/content";
 
+const locales = ["en", "de", "es", "fr"] as const;
+
 const createBaseSchema = () =>
   z.object({
     title: z.string(),
@@ -41,46 +43,51 @@ const createTestimonialSchema = () =>
 
 export default defineContentConfig({
   collections: {
-    index: defineCollection({
-      type: "page",
-      source: "index.yml",
-      schema: z.object({
-        hero: z.object({
-          links: z.array(createButtonSchema()),
-          images: z.array(createImageSchema()),
-        }),
-        about: createBaseSchema(),
-        experience: createBaseSchema().extend({
-          items: z.array(
-            z.object({
-              date: z.date(),
-              position: z.string(),
-              company: z.object({
-                name: z.string(),
-                url: z.string(),
-                logo: z.string().editor({ input: "icon" }),
-                color: z.string(),
-              }),
+    ...Object.fromEntries(
+      locales.map((locale) => [
+        `index_${locale}`,
+        defineCollection({
+          type: "page",
+          source: { include: `${locale}/index.yml`, prefix: "" },
+          schema: z.object({
+            hero: z.object({
+              links: z.array(createButtonSchema()),
+              images: z.array(createImageSchema()),
             }),
-          ),
-        }),
-        testimonials: z.array(createTestimonialSchema()),
-        blog: createBaseSchema(),
-        faq: createBaseSchema().extend({
-          categories: z.array(
-            z.object({
-              title: z.string().nonempty(),
-              questions: z.array(
+            about: createBaseSchema(),
+            experience: createBaseSchema().extend({
+              items: z.array(
                 z.object({
-                  label: z.string().nonempty(),
-                  content: z.string().nonempty(),
+                  date: z.date(),
+                  position: z.string(),
+                  company: z.object({
+                    name: z.string(),
+                    url: z.string(),
+                    logo: z.string().editor({ input: "icon" }),
+                    color: z.string(),
+                  }),
                 }),
               ),
             }),
-          ),
+            testimonials: z.array(createTestimonialSchema()),
+            blog: createBaseSchema(),
+            faq: createBaseSchema().extend({
+              categories: z.array(
+                z.object({
+                  title: z.string().nonempty(),
+                  questions: z.array(
+                    z.object({
+                      label: z.string().nonempty(),
+                      content: z.string().nonempty(),
+                    }),
+                  ),
+                }),
+              ),
+            }),
+          }),
         }),
-      }),
-    }),
+      ]),
+    ),
     projects: defineCollection({
       type: "data",
       source: "projects/*.yml",
@@ -103,36 +110,54 @@ export default defineContentConfig({
         author: createAuthorSchema(),
       }),
     }),
-    pages: defineCollection({
-      type: "page",
-      source: [{ include: "projects.yml" }, { include: "blog.yml" }],
-      schema: z.object({
-        links: z.array(createButtonSchema()),
-      }),
-    }),
-    speaking: defineCollection({
-      type: "page",
-      source: "speaking.yml",
-      schema: z.object({
-        links: z.array(createButtonSchema()),
-        events: z.array(
-          z.object({
-            category: z.enum(["Live talk", "Podcast", "Conference"]),
-            title: z.string(),
-            date: z.date(),
-            location: z.string(),
-            url: z.string().optional(),
+    ...Object.fromEntries(
+      locales.map((locale) => [
+        `pages_${locale}`,
+        defineCollection({
+          type: "page",
+          source: [
+            { include: `${locale}/projects.yml`, prefix: "" },
+            { include: `${locale}/blog.yml`, prefix: "" },
+          ],
+          schema: z.object({
+            links: z.array(createButtonSchema()),
           }),
-        ),
-      }),
-    }),
-    about: defineCollection({
-      type: "page",
-      source: "about.yml",
-      schema: z.object({
-        content: z.object({}),
-        images: z.array(createImageSchema()),
-      }),
-    }),
+        }),
+      ]),
+    ),
+    ...Object.fromEntries(
+      locales.map((locale) => [
+        `speaking_${locale}`,
+        defineCollection({
+          type: "page",
+          source: { include: `${locale}/speaking.yml`, prefix: "" },
+          schema: z.object({
+            links: z.array(createButtonSchema()),
+            events: z.array(
+              z.object({
+                category: z.enum(["Live talk", "Podcast", "Conference"]),
+                title: z.string(),
+                date: z.date(),
+                location: z.string(),
+                url: z.string().optional(),
+              }),
+            ),
+          }),
+        }),
+      ]),
+    ),
+    ...Object.fromEntries(
+      locales.map((locale) => [
+        `about_${locale}`,
+        defineCollection({
+          type: "page",
+          source: { include: `${locale}/about.yml`, prefix: "" },
+          schema: z.object({
+            content: z.object({}),
+            images: z.array(createImageSchema()),
+          }),
+        }),
+      ]),
+    ),
   },
 });

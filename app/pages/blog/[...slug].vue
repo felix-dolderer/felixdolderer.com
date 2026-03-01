@@ -4,16 +4,36 @@ import { mapContentNavigation } from "@nuxt/ui/utils/content";
 import { findPageBreadcrumb } from "@nuxt/content/utils";
 
 const route = useRoute();
+const { locale, locales, t } = useI18n();
+const localePath = useLocalePath();
 
-const { data: page } = await useAsyncData(route.path, () =>
-  queryCollection("blog").path(route.path).first(),
+const localizedBlogPath = computed(() => {
+  const localeCodes = locales.value.map((entry) =>
+    typeof entry === "string" ? entry : entry.code,
+  );
+
+  for (const code of localeCodes) {
+    if (route.path === `/${code}`) return "/";
+    if (route.path.startsWith(`/${code}/`)) return route.path.replace(`/${code}`, "");
+  }
+
+  return route.path;
+});
+
+const { data: page } = await useAsyncData(
+  () => `blog-${localizedBlogPath.value}`,
+  () => queryCollection("blog").path(localizedBlogPath.value).first(),
+  { watch: [localizedBlogPath] },
 );
 if (!page.value)
   throw createError({ statusCode: 404, statusMessage: "Page not found", fatal: true });
-const { data: surround } = await useAsyncData(`${route.path}-surround`, () =>
-  queryCollectionItemSurroundings("blog", route.path, {
-    fields: ["description"],
-  }),
+const { data: surround } = await useAsyncData(
+  () => `blog-surround-${localizedBlogPath.value}`,
+  () =>
+    queryCollectionItemSurroundings("blog", localizedBlogPath.value, {
+      fields: ["description"],
+    }),
+  { watch: [localizedBlogPath] },
 );
 
 const navigation = inject<Ref<ContentNavigationItem[]>>("navigation", ref([]));
@@ -54,7 +74,7 @@ useSeoMeta({
 const articleLink = computed(() => `${window?.location}`);
 
 const formatDate = (dateString: string) => {
-  return new Date(dateString).toLocaleDateString("en-US", {
+  return new Date(dateString).toLocaleDateString(locale.value, {
     year: "numeric",
     month: "short",
     day: "numeric",
@@ -66,9 +86,9 @@ const formatDate = (dateString: string) => {
   <UMain class="mt-20 px-2">
     <UContainer class="relative min-h-screen">
       <UPage v-if="page">
-        <ULink to="/blog" class="text-sm flex items-center gap-1">
+        <ULink :to="localePath('/blog')" class="text-sm flex items-center gap-1">
           <UIcon name="lucide:chevron-left" />
-          Blog
+          {{ t("blog.backToBlog") }}
         </ULink>
         <div class="flex flex-col gap-3 mt-8">
           <div class="flex text-xs text-muted items-center justify-center gap-2">
@@ -76,7 +96,7 @@ const formatDate = (dateString: string) => {
               {{ formatDate(page.date) }}
             </span>
             <span v-if="page.date && page.minRead"> - </span>
-            <span v-if="page.minRead"> {{ page.minRead }} MIN READ </span>
+            <span v-if="page.minRead"> {{ t("blog.minRead", { minutes: page.minRead }) }} </span>
           </div>
           <NuxtImg
             :src="page.image"
@@ -107,8 +127,8 @@ const formatDate = (dateString: string) => {
               size="sm"
               variant="link"
               color="neutral"
-              label="Copy link"
-              @click="copyToClipboard(articleLink, 'Article link copied to clipboard')"
+              :label="t('blog.copyLink')"
+              @click="copyToClipboard(articleLink, t('blog.copied'))"
             />
           </div>
           <UContentSurround :surround />

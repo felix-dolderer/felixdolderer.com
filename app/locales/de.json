@@ -1,0 +1,34 @@
+{
+  "nav": {
+    "home": "Startseite",
+    "projects": "Projekte",
+    "blog": "Blog",
+    "speaking": "Vorträge",
+    "about": "Über mich"
+  },
+  "hero": {
+    "available": "Verfügbar für neue Projekte",
+    "unavailable": "Derzeit nicht verfügbar"
+  },
+  "blog": {
+    "readArticle": "Artikel lesen",
+    "backToBlog": "Blog",
+    "minRead": "{minutes} MIN LESEZEIT",
+    "copyLink": "Link kopieren",
+    "copied": "Artikellink in die Zwischenablage kopiert"
+  },
+  "projects": {
+    "viewProject": "Projekt ansehen"
+  },
+  "speaking": {
+    "listen": "Anhören",
+    "watch": "Ansehen"
+  },
+  "error": {
+    "notFoundTitle": "Seite nicht gefunden",
+    "notFoundDescription": "Diese Seite konnte leider nicht gefunden werden."
+  },
+  "footer": {
+    "credits": "Erstellt mit Nuxt UI • © {year}"
+  }
+}

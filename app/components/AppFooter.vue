@@ -1,11 +1,18 @@
 <script setup lang="ts">
 const { footer } = useAppConfig();
+const { t } = useI18n();
+
+const credits = computed(() =>
+  t("footer.credits", {
+    year: new Date().getFullYear(),
+  }),
+);
 </script>
 
 <template>
   <UFooter class="z-10 bg-default pb-10" :ui="{ left: 'text-muted text-xs' }">
     <template #left>
-      {{ footer.credits }}
+      {{ credits }}
     </template>
 
     <template #right>

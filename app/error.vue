@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import type { NuxtError } from "#app";
 
+const { locale, t } = useI18n();
+const navLinks = useNavLinks();
+
 defineProps({
   error: {
     type: Object as PropType<NuxtError>,
@@ -10,13 +13,13 @@ defineProps({
 
 useHead({
   htmlAttrs: {
-    lang: "en",
+    lang: locale,
   },
 });
 
 useSeoMeta({
-  title: "Page not found",
-  description: "We are sorry but this page could not be found.",
+  title: t("error.notFoundTitle"),
+  description: t("error.notFoundDescription"),
 });
 
 const [{ data: navigation }, { data: files }] = await Promise.all([

@@ -7,9 +7,17 @@ type Event = {
   category: "Conference" | "Live talk" | "Podcast";
 };
 
-const { data: page } = await useAsyncData("speaking", () => {
-  return queryCollection("speaking").first();
-});
+const { locale, t } = useI18n();
+
+const { data: page } = await useAsyncData(
+  () => `speaking-${locale.value}`,
+  async () => {
+    const localizedPage = await queryCollection(`speaking_${locale.value}`).first();
+    if (localizedPage) return localizedPage;
+    return queryCollection("speaking_en").first();
+  },
+  { watch: [locale] },
+);
 if (!page.value) {
   throw createError({
     statusCode: 404,
@@ -41,7 +49,10 @@ const groupedEvents = computed((): Record<Event["category"], Event[]> => {
 });
 
 function formatDate(dateString: string): string {
-  return new Date(dateString).toLocaleDateString("en-US", { year: "numeric", month: "long" });
+  return new Date(dateString).toLocaleDateString(locale.value, {
+    year: "numeric",
+    month: "long",
+  });
 }
 </script>
 
@@ -96,7 +107,7 @@ function formatDate(dateString: string): string {
             <UButton
               v-if="event.url"
               target="_blank"
-              :label="event.category === 'Podcast' ? 'Listen' : 'Watch'"
+              :label="event.category === 'Podcast' ? t('speaking.listen') : t('speaking.watch')"
               variant="link"
               class="p-0 pt-2 gap-0"
             >

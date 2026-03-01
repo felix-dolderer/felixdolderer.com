@@ -1,0 +1,34 @@
+{
+  "nav": {
+    "home": "Home",
+    "projects": "Projects",
+    "blog": "Blog",
+    "speaking": "Speaking",
+    "about": "About"
+  },
+  "hero": {
+    "available": "Available for new projects",
+    "unavailable": "Not available at the moment"
+  },
+  "blog": {
+    "readArticle": "Read Article",
+    "backToBlog": "Blog",
+    "minRead": "{minutes} MIN READ",
+    "copyLink": "Copy link",
+    "copied": "Article link copied to clipboard"
+  },
+  "projects": {
+    "viewProject": "View Project"
+  },
+  "speaking": {
+    "listen": "Listen",
+    "watch": "Watch"
+  },
+  "error": {
+    "notFoundTitle": "Page not found",
+    "notFoundDescription": "We are sorry but this page could not be found."
+  },
+  "footer": {
+    "credits": "Built with Nuxt UI • © {year}"
+  }
+}

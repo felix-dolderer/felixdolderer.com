@@ -1,7 +1,21 @@
 <script setup lang="ts">
-const { data: page } = await useAsyncData("blog-page", () => {
-  return queryCollection("pages").path("/blog").first();
-});
+const { locale } = useI18n();
+const localePath = useLocalePath();
+
+const getLocalizedPageBySlug = async (collection: string, slug: "/projects" | "/blog") => {
+  const pages = await queryCollection(collection as any).all();
+  return (pages as any[]).find((entry) => entry.path?.endsWith(slug)) || null;
+};
+
+const { data: page } = await useAsyncData<any>(
+  () => `blog-page-${locale.value}`,
+  async () => {
+    const localizedPage = await getLocalizedPageBySlug(`pages_${locale.value}`, "/blog");
+    if (localizedPage) return localizedPage;
+    return getLocalizedPageBySlug("pages_en", "/blog");
+  },
+  { watch: [locale] },
+);
 if (!page.value) {
   throw createError({
     statusCode: 404,
@@ -57,7 +71,7 @@ useSeoMeta({
           <UBlogPost
             variant="naked"
             orientation="horizontal"
-            :to="post.path"
+            :to="localePath(post.path)"
             v-bind="post"
             :ui="{
               root: 'md:grid md:grid-cols-2 group overflow-visible transition-all duration-300',
