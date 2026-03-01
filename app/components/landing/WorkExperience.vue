@@ -8,7 +8,7 @@ defineProps<{
   <UPageSection
     :title="page.experience.title"
     :ui="{
-      container: '!p-0 gap-4 sm:gap-4',
+      container: 'p-0! gap-4 sm:gap-4',
       title: 'text-left text-xl sm:text-xl lg:text-2xl font-medium',
       description: 'mt-2',
     }"
@@ -45,5 +45,3 @@ defineProps<{
     </template>
   </UPageSection>
 </template>
-
-<style scoped></style>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 defineProps<{
-  image: {
+  img: {
     src: string;
     alt: string;
   };
@@ -16,9 +16,9 @@ defineProps<{
       index % 2 === 0 ? 'hover:-translate-x-4' : 'hover:translate-x-4',
     ]"
   >
-    <img :src="image.src" :alt="image.alt" class="size-32 object-cover" />
+    <img :src="img.src" :alt="img.alt" class="size-32 object-cover" />
     <span class="w-32 text-xs text-black font-serif font-medium text-center mt-2">
-      {{ image.alt }}
+      {{ img.alt }}
     </span>
   </div>
 </template>

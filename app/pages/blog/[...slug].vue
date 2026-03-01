@@ -71,7 +71,7 @@ useSeoMeta({
   ogTitle: title,
 });
 
-const articleLink = computed(() => `${window?.location}`);
+const articleLink = computed(() => `${globalThis?.location}`);
 
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString(locale.value, {
