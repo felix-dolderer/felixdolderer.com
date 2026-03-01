@@ -32,4 +32,7 @@ export default defineNuxtConfig({
       crawlLinks: true,
     },
   },
+  image: {
+    quality: 80,
+  },
 });
